@@ -44,12 +44,12 @@ adServerHost = "http://10.9.2.10:8090/"
 passwordServerHost = "http://localhost:8081/"
 # 请求头
 headers = {
-        '_c': "2222",
-        '_m': "90:67:1c:cc:98:2c",
-        '_p': "1",
-        '_v': "2.6.6",
-        'userType': "d"
-        }
+    '_c': "2222",
+    '_m': "90:67:1c:cc:98:2c",
+    '_p': "1",
+    '_v': "2.6.6",
+    'userType': "d"
+}
 # 获取基本数据
 loginKey = geturl(adServerHost + "login/genLoginKey", {'phoneNum': phoneNum}, headers)
 import json
@@ -65,7 +65,7 @@ loginParamter = {
     'loginKey': loginKey,
     'password': encryptedPwd,
     'deviceSN': deviceSN
-    }
+}
 loginInfo = geturl(adServerHost + "login/login", loginParamter, headers)
 loginInfoJsonData = json.loads(loginInfo)
 loginInfoData = loginInfoJsonData.get("data")
@@ -77,5 +77,5 @@ defaultParameter = {
     'token': token,
     'id': doctorId,
     'doctorId': doctorId
-    }
+}
 print(geturl(adServerHost + "user/detail", defaultParameter, headers))
