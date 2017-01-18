@@ -10,50 +10,23 @@ def open_excel(file='file.xls'):
         print(str(e))
 
 
-# 根据索引获取Excel表格中的数据参数:file：Excel文件路径;colname_index：表头列名所在行的索引，by_index：表的索引
-def excel_table_byindex(file='file.xls', colname_index=0, by_index=0):
+# 根据索引获取用例总数:file：Excel文件路径; by_index：表的索引
+def get_test_case_count(file='file.xls', by_index=0):
     data = open_excel(file)
     table = data.sheets()[by_index]
-    nrows = table.nrows  # 行数
-    ncols = table.ncols  # 列数
-    colnames = table.row_values(colname_index)  # 某一行数据
-    res_list = []
-    for rownum in range(1, nrows):
-        row = table.row_values(rownum)
-        if row:
-            app = {}
-            for i in range(len(colnames)):
-                app[colnames[i]] = row[i]
-                res_list.append(app)
-    return res_list
+    return table.nrows - 1
 
 
-# 根据名称获取Excel表格中的数据参数:file：Excel文件路径colname_index：表头列名所在行的索引，by_name：Sheet1名称
-def excel_table_byname(file='file.xls', colname_index=0, by_name=u'TestCases'):
+# 根据行id获取单行数据
+def get_row_value(file='file.xls', row_num=1, by_index=0):
     data = open_excel(file)
-    table = data.sheet_by_name(by_name)
-    nrows = table.nrows  # 行数
-    colnames = table.row_values(colname_index)  # 某一行数据
-    res_list = []
-    for rownum in range(1, nrows):
-        row = table.row_values(rownum)
-        if row:
-            app = {}
-            for i in range(len(colnames)):
-                app[colnames[i]] = row[i]
-                res_list.append(app)
-    return res_list
+    table = data.sheets()[by_index]
+    row = table.row_values(row_num)
+    return row
 
 
 def main():
-    tables = excel_table_byindex()
-    for row in tables:
-        print(row)
-
-    tables = excel_table_byname()
-    for row in tables:
-        print(row)
-
+    get_row_value()
 
 if __name__ == "__main__":
     main()
