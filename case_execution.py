@@ -10,15 +10,22 @@ def execute_case(case=[], default_parameter={}, headers={}, prefix_result=[]):
     test_result = test_case
     data = default_parameter + test_case['parameter']
     if test_case['prefix_case_id'] == -1:
-        test_result['test_result'] = execute_request(test_case, data, headers)
+        result_with_response = execute_request(test_case, data, headers)
+        test_result['test_result'] = result_with_response[0]
+        test_result['http_response'] = result_with_response[1]
     else:
         for x in prefix_result:
             if x['id'] == test_case['prefix_case_id']:
                 prefix_case_result = x['test_result']
                 if prefix_case_result == "通过":
-                    test_result['test_result'] = execute_request(test_case, data, headers)
+                    result_with_response = execute_request(test_case, data, headers)
+                    test_result['test_result'] = result_with_response[0]
+                    test_result['http_response'] = result_with_response[1]
+                    break
                 else:
                     test_result['test_result'] = x['test_result']
+                    test_result['test_result_comment'] = "前置测试用例{1}未通过，标记为与前置用例结果一致".format(x['id'])
+                    break
     return test_result
 
 
@@ -32,11 +39,11 @@ def execute_request(test_case={}, data={}, headers={}):
         return http_response
         test_result_bool = get_result(test_case['verification_method'], http_response, test_case['expected_result'])
         if test_result_bool:
-            return "通过"
+            return ["通过", http_response]
         else:
-            return "失败"
+            return ["失败", http_response]
     else:
-        return "跳过"
+        return ["跳过", ""]
 
 
 # 解析从excel读取得到的测试用例内容

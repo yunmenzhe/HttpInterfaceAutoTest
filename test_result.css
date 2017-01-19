@@ -1,0 +1,64 @@
+#title {
+    background-color:yellow;
+    color:black;
+    text-align:center;
+    padding:5px;
+    width:95%;
+    align:center
+}
+#summary {
+    background-color:#CCCCCC;
+    color:black;
+    text-align:left;
+    padding:5px;
+    width:95%;
+    align:center
+}
+
+#test_result {
+    background-color:#DDDDDD;
+    color:black;
+    text-align:left;
+    padding:5px;
+    width:95%;
+    align:center
+}
+
+#results{
+    width:100%;
+    border-collapse:collapse;
+}
+
+#results td, #results th {
+    font-size:1em;
+    border:1px solid #000000;
+    padding:3px 7px 2px 7px;
+}
+
+#results th {
+    font-size:1.1em;
+    text-align:left;
+    padding-top:5px;
+    padding-bottom:4px;
+    background-color:#000000;
+    color:#ffffff;
+}
+
+#results tr.pass td{
+    color:#000000;
+    background-color:#FFFFFF;
+}
+#results tr.fail td{
+    color:#000000;
+    background-color:red;
+}
+#results tr.block td{
+    color:#000000;
+    background-color:yellow;
+}
+#results tr.title td{
+    color:#000000;
+    font-weight:bold;
+    background-color:#CCCCCC;
+}
+body {font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu}
