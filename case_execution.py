@@ -8,7 +8,9 @@ from utils.result_verification import get_result
 def execute_case(case=[], default_parameter={}, headers={}, prefix_result=[]):
     test_case = get_case(case)
     test_result = test_case
-    data = default_parameter + test_case['parameter']
+    data = default_parameter
+    if test_case['parameter'] != "":
+        data = dict(eval(test_case['parameter']), **default_parameter)
     if test_case['prefix_case_id'] == -1:
         result_with_response = execute_request(test_case, data, headers)
         test_result['test_result'] = result_with_response[0]
@@ -24,7 +26,8 @@ def execute_case(case=[], default_parameter={}, headers={}, prefix_result=[]):
                     break
                 else:
                     test_result['test_result'] = x['test_result']
-                    test_result['test_result_comment'] = "前置测试用例{1}未通过，标记为与前置用例结果一致".format(x['id'])
+                    test_result['comment'] = "前置测试用例{0}未通过，标记为与前置用例结果一致".format(x['id'])
+                    test_result['http_response'] = ""
                     break
     return test_result
 
@@ -36,7 +39,6 @@ def execute_request(test_case={}, data={}, headers={}):
             http_response = geturl(test_case['url'], data, headers)
         elif test_case['method'] == const.CASE_HTTP_METHOD_POST:
             http_response = posturl(test_case['url'], data, headers)
-        return http_response
         test_result_bool = get_result(test_case['verification_method'], http_response, test_case['expected_result'])
         if test_result_bool:
             return ["通过", http_response]
@@ -50,14 +52,14 @@ def execute_request(test_case={}, data={}, headers={}):
 def get_case(case=[]):
     # 组成http_url
     url = case[const.CASE_HTTP_URL]
-    if case[const.CASE_SERVER] == const.const.CASE_SERVER_AD_SERVER:
+    if case[const.CASE_SERVER] == const.CASE_SERVER_AD_SERVER:
         http_url = const.HOST_AD_SERVER + url
-    elif case[const.CASE_SERVER] == const.const.CASE_SERVER_IM_SERVER:
+    elif case[const.CASE_SERVER] == const.CASE_SERVER_IM_SERVER:
         http_url = const.HOST_IM_SERVER + url
     else:
         http_url = url
     # prefix_id
-    if case[const.CASE_PREFIX_CASE_ID]:
+    if case[const.CASE_PREFIX_CASE_ID] != "":
         prefix_id = int(case[const.CASE_PREFIX_CASE_ID])
     else:
         prefix_id = -1
@@ -66,13 +68,14 @@ def get_case(case=[]):
         'id': int(case[const.CASE_ID]),
         'description': case[const.CASE_DESCRIPTION],
         'url': http_url,
+        'http_url': url,
         'method': case[const.CASE_HTTP_METHOD],
         'parameter': case[const.CASE_PARAMETER],
         'verification_method': case[const.CASE_VERIFICATION_METHOD],
         'expected_result': case[const.CASE_EXPECTED_RESULT],
         'prefix_case_id': prefix_id,
         'execution': case[const.CASE_EXECUTION],
-        'comment': case[CASE_COMMENT]
+        'comment': case[const.CASE_COMMENT]
     }
     return test_case
 

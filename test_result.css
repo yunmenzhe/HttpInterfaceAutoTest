@@ -37,11 +37,11 @@
 
 #results th {
     font-size:1.1em;
-    text-align:left;
-    padding-top:5px;
-    padding-bottom:4px;
-    background-color:#000000;
-    color:#ffffff;
+    text-align:center;
+    padding-top:3px;
+    padding-bottom:2px;
+    background-color:#DDDDDD;
+    color:#000000;
 }
 
 #results tr.pass td{
@@ -58,7 +58,7 @@
 }
 #results tr.title td{
     color:#000000;
-    font-weight:bold;
+    font-weight: bold;
     background-color:#CCCCCC;
 }
 body {font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu}

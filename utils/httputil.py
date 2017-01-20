@@ -21,7 +21,7 @@ def geturl(url, data={}, headers={}):
 
 def posturl(url, data={}, headers={}):
     try:
-        params = urllib.parse.urlencode(data)
+        params = urllib.parse.urlencode(data).encode("utf8")
         req = urllib.request.Request(url, params, headers)
         r = urllib.request.urlopen(req)
         html = r.read()
